@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: commonHead(${title})"></head>
+<body>
+<div th:replace="fragments/header :: mainHeader"></div>
+
+<main role="main" class="container mt-4">
+    <div th:insert="~{::pageContent}"></div>
+</main>
+
+<div th:replace="fragments/footer :: mainFooter"></div>
+<div th:replace="fragments/scripts :: scripts"></div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+    <title>Dashboard</title>
+</head>
+<body>
+
+<th:block th:replace="~{fragments/header :: header}"></th:block>
+
+<div class="container mt-5">
+
+    <div class="card shadow-sm p-4">
+        <h2 class="mb-3">Dashboard</h2>
+
+        <p class="lead">Welcome back, <span id="username"></span>!</p>
+
+        <hr>
+
+        <div class="mt-4">
+            <h4>Your Quick Actions</h4>
+            <ul>
+                <li><a href="/admin">Admin Panel</a></li>
+                <li><a href="/profile">View Profile</a></li>
+                <li><a href="/public/home">Go to Home</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Display logged-in username (stored during login)
+    const name = localStorage.getItem("username");
+    if (name) {
+        document.getElementById("username").innerText = name;
+    }
+
+    function logout() {
+        localStorage.removeItem("JWT");
+        localStorage.removeItem("username");
+        window.location.href = "/login";
+    }
+</script>
+
+<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+
+</body>
+</html>
