@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>All Users</title></head>
+<body>
+<h2>All Users</h2>
+
+<table border="1">
+    <tr>
+        <th>ID</th><th>Username</th><th>Email</th><th>Phone</th>
+    </tr>
+    <tr th:each="u : ${users}">
+        <td th:text="${u.id}"></td>
+        <td th:text="${u.username}"></td>
+        <td th:text="${u.email}"></td>
+        <td th:text="${u.phone_number}"></td>
+    </tr>
+</table>
+
+<a href="/logout">Logout</a>
+
+</body>
+</html>

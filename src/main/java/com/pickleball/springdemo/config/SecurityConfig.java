@@ -1,74 +1,21 @@
 package com.pickleball.springdemo.config;
 
-import com.pickleball.springdemo.service.UserDetailsServiceImpl;
+import com.pickleball.springdemo.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig {
 
-    private final UserDetailsServiceImpl userDetailsService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final CustomUserDetailsService userDetailsService;
 
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService,
-                          JwtTokenProvider jwtTokenProvider) {
+    public SecurityConfig(CustomUserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-        http
-                // Disable CSRF for APIs
-                .csrf(csrf -> csrf.disable())
-
-                // Stateless session management
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-
-                // No default login page
-                .formLogin(form -> form.disable())
-                .httpBasic(httpBasic -> httpBasic.disable())
-                .logout(logout -> logout.disable())
-
-                // URL authorization
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/users/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
-                );
-
-        // JWT filter before Spring Security's authentication filter
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
-    }
-
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
-            throws Exception {
-        return config.getAuthenticationManager();
     }
 
     @Bean
@@ -77,7 +24,49 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(jwtTokenProvider, userDetailsService);
+    public DaoAuthenticationProvider authProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        http
+                .authorizeHttpRequests(auth -> auth
+                        // Public pages
+                        .requestMatchers("/", "/product", "/product/**",
+                                "/categories", "/category/**",
+                                "/search",
+                                "/cart",
+                                "/login", "/register",
+                                "/css/**", "/js/**", "/img/**",
+                                "/h2-console/**")
+                        .permitAll()
+
+                        // Protected pages
+                        .requestMatchers("/checkout", "/order", "/account/**").authenticated()
+                        .requestMatchers("/users").authenticated()      // your protected page
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/users", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
+                );
+
+        // REQUIRED for H2 console
+        http.csrf(csrf -> csrf.disable());
+        http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
+        return http.build();
     }
 }

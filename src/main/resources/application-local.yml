@@ -73,7 +73,7 @@ management:
 
 
 jwt:
-  secret: NvUvJ23+KsDgB8pZz5xhZTqjHbDRqJAnKx1LJHQYDKk=
+  secret: JdSHiEInKEVSQRkA5WjrE4Vdwx4VMaTGYx3Hszisbp/BV7FdL+uTPQKJ5i7TK+z8gspJOkrXKHxdbW9AVvQO2g==
   expiration: 3600000
 
 server:

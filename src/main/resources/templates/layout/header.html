@@ -1,0 +1,17 @@
+<!-- Header fragment -->
+<div th:fragment="body">
+    <header class="bg-dark text-white p-3">
+        <div class="container d-flex justify-content-between align-items-center">
+            <h1 class="h4 m-0">Pickleball App</h1>
+            <nav>
+                <a th:href="@{/}" class="text-white me-3">Home</a>
+                <a th:href="@{/users}" class="text-white me-3">Users</a>
+                <a th:href="@{/product}" class="text-white me-3">Products</a>
+
+                <!-- Login/Register links -->
+                <a th:href="@{/login}" class="text-white me-3">Login</a>
+                <a th:href="@{/register}" class="text-white">Register</a>
+            </nav>
+        </div>
+    </header>
+</div>

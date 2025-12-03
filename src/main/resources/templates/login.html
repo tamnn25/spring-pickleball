@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Login</title>
-    <link href="/css/tailwind.css" rel="stylesheet"/>
+    <title th:text="${pageTitle}">Login Page</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 </head>
-<body class="p-6">
-<h1 class="text-2xl mb-4">Login</h1>
+<body>
+<!-- Header -->
+<div th:replace="layout/header :: header"></div>
 
-<!-- Show error message -->
-<div th:if="${error}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-    <span th:text="${error}"></span>
+<!-- Page content -->
+<div class="container mt-5" style="max-width: 450px;">
+    <h2 class="text-center mb-4">Login</h2>
+    <form th:action="@{/login}" method="post" class="border p-4 rounded shadow-sm bg-light">
+        <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input name="username" type="text" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input name="password" type="password" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+        <div class="text-center mt-3">
+            <a th:href="@{/register}">Don't have an account? Register</a>
+        </div>
+    </form>
 </div>
 
-<!-- Change action to your custom login endpoint -->
-<form th:action="@{/login}" method="post" class="max-w-md space-y-4">
-    <div>
-        <label>Username</label>
-        <input type="text" name="username" required class="border p-2 w-full"/>
-    </div>
-    <div>
-        <label>Password</label>
-        <input type="password" name="password" required class="border p-2 w-full"/>
-    </div>
-    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Login</button>
-</form>
-<p class="mt-4">
-    <a href="/register" class="text-blue-700">Register</a> if you don't have an account
-</p>
+<!-- Footer -->
+<div th:replace="layout/footer :: footer"></div>
 </body>
 </html>

@@ -1,29 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Register</title>
-    <link href="/css/tailwind.css" rel="stylesheet"/>
+    <title th:text="${pageTitle}">Register - Pickleball App</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
 </head>
-<body class="p-6">
-<h1 class="text-2xl mb-4">Register</h1>
-<form th:action="@{/register}" method="post" class="space-y-4 max-w-md">
-    <div>
-        <label>Name</label>
-        <input type="text" name="name" required class="border p-2 w-full"/>
-    </div>
-    <div>
-        <label>Username</label>
-        <input type="text" name="username" required class="border p-2 w-full"/>
-    </div>
-    <div>
-        <label>Email</label>
-        <input type="email" name="email" required class="border p-2 w-full"/>
-    </div>
-    <div>
-        <label>Password</label>
-        <input type="password" name="password" required class="border p-2 w-full"/>
-    </div>
-    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Register</button>
-</form>
+<body>
+<!-- Header -->
+<div th:replace="layout/header :: header"></div>
+
+<!-- Page content -->
+<div class="container mt-5" style="max-width: 500px;">
+    <h2 class="text-center mb-4">Register</h2>
+
+    <form th:action="@{/register}" th:object="${user}" method="post" class="border p-4 rounded shadow-sm bg-light">
+        <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text" th:field="*{username}" class="form-control" placeholder="Enter username" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" th:field="*{email}" class="form-control" placeholder="Enter email" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" th:field="*{password}" class="form-control" placeholder="Enter password" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Phone</label>
+            <input type="text" th:field="*{phone_number}" class="form-control" placeholder="Enter phone number">
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Register</button>
+
+        <div class="text-center mt-3">
+            <a th:href="@{/login}">Already have an account? Login</a>
+        </div>
+    </form>
+</div>
+
+<!-- Footer -->
+<div th:replace="layout/footer :: footer"></div>
+
 </body>
 </html>
