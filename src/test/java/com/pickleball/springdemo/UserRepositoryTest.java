@@ -18,7 +18,7 @@ public class UserRepositoryTest {
     public void testSaveUserToDatabase() {
         // Given
         User user = new User();
-        user.setName("Test User");
+        user.setUsername("Test User");
         user.setEmail("testuser@example.com");
 
         // When
@@ -27,7 +27,7 @@ public class UserRepositoryTest {
         // Then
 //        assertThat(savedUser).isNotNull();
 //        assertThat(savedUser.getId()).isNotNull();
-        assertThat(savedUser.getName()).isEqualTo("Test User");
+        assertThat(savedUser.getUsername()).isEqualTo("Test User");
         assertThat(savedUser.getEmail()).isEqualTo("testuser@example.com");
     }
 }

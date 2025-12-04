@@ -33,4 +33,12 @@ public class Role {
 
     public Set<User> getUsers() { return users; }
     public void setUsers(Set<User> users) { this.users = users; }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", username='" + name + '\'' +
+                '}';
+    }
 }

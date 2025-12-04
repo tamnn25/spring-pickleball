@@ -31,6 +31,7 @@ public class UserController {
     // LIST USERS
     @GetMapping
     public String listUsers(Model model) {
+        System.out.println("user information" + userRepository.findAll());
         model.addAttribute("users", userRepository.findAll());
         return "users/list";  // templates/users/list.html
     }
