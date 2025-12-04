@@ -8,9 +8,23 @@
                 <a th:href="@{/users}" class="text-white me-3">Users</a>
                 <a th:href="@{/product}" class="text-white me-3">Products</a>
 
-                <!-- Login/Register links -->
-                <a th:href="@{/login}" class="text-white me-3">Login</a>
-                <a th:href="@{/register}" class="text-white">Register</a>
+                <!-- Show when NOT logged in -->
+                <span sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/login}" class="text-white me-3">Login</a>
+                    <a th:href="@{/register}" class="text-white">Register</a>
+                </span>
+
+                <!-- Show when logged in -->
+                <span sec:authorize="isAuthenticated()">
+                    <span class="text-warning me-3">
+                        Hello, <span sec:authentication="name"></span>
+                    </span>
+
+                    <!-- Logout -->
+                    <form th:action="@{/logout}" method="post" style="display:inline;">
+                        <button class="btn btn-sm btn-danger">Logout</button>
+                    </form>
+                </span>
             </nav>
         </div>
     </header>

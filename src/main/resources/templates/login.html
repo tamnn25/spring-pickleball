@@ -2,7 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:text="${pageTitle}">Login Page</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <!-- Bootstrap -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" th:href="@{/images/favicon.ico}">
 </head>
 <body>
 <!-- Header -->
@@ -29,5 +34,7 @@
 
 <!-- Footer -->
 <div th:replace="layout/footer :: footer"></div>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/main.js}"></script>
 </body>
 </html>

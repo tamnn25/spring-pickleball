@@ -54,13 +54,10 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             System.out.println("Validation errors found:");
             bindingResult.getAllErrors().forEach(error ->
-                    System.out.println(error.getDefaultMessage())
+                    System.out.println("Message error ======="+error.getDefaultMessage())
             );
             return "users/create";
         }
-
-
-
 
         try {
             // Map DTO to entity

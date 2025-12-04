@@ -1,11 +1,14 @@
 package com.pickleball.springdemo.controller;
 
+import com.pickleball.springdemo.dto.UserRegistrationDto;
 import com.pickleball.springdemo.model.Role;
 import com.pickleball.springdemo.model.User;
 import com.pickleball.springdemo.repository.RoleRepository;
 import com.pickleball.springdemo.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -34,7 +37,15 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute User user) {
+    public String registerUser(@Valid @ModelAttribute("user") UserRegistrationDto userDto,
+                               BindingResult bindingResult, User user) {
+
+        if (bindingResult.hasErrors()){
+            bindingResult.getAllErrors().forEach(error -> {
+                System.out.println("error message" + error.getDefaultMessage());
+            });
+        }
+
         // In your service or controller
         Role userRole = roleRepository.findByName("ROLE_USER")
                 .orElseThrow(() -> new RuntimeException("Default role not found"));
